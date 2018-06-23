@@ -5,9 +5,6 @@ class Board extends CI_Controller {
 
 	public function index()	
 	{
-		// $sql = "SELECT * FROM posts WHERE is_secret != 'Y' ORDER BY created DESC";
-		// $result = mysqli_query($link, $sql);
-
 		$this->db->where('is_secret !=', 'Y');
 		$this->db->order_by('created', 'desc');
 		$posts = $this->db->get('posts')->result_array();
@@ -16,6 +13,13 @@ class Board extends CI_Controller {
 		$data['footer'] = $this->_footer();
 
 		$this->load->view('board', $data);
+	}
+
+	public function write()
+	{
+		$data['header'] = $this->_header();
+		$data['footer'] = $this->_footer();
+		$this->load->view('board_write', $data);
 	}
 
 	public function _header()	# 메서드 앞에 '_'를 붙이면 외부에서 접근이 불가능하다. 주로 설정파일 같은 것들에 사용한다.

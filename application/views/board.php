@@ -18,13 +18,13 @@
 	            <td><a href="/board/view.php?no=<?=$post['no']?>"><?=$post['title']?></a></td>
 	            <td><?=$post['content']?></td>
 	            <td><?=$post['created']?></td>
-	            <td><a href="/board/write.php?no=<?=$post['no']?>" class="btn btn-primary btn-sm">수정</td>
+	            <td><a href="/board/edit?no=<?=$post['no']?>" class="btn btn-primary btn-sm">수정</td>
 	        </tr>
 	     	<?php endforeach; ?>
     	</tbody>
    	</table>
 	<div>
-		<a href="/board/write.php" class='btn btn-primary'>글쓰기</a>
+		<a href="/board/write" class='btn btn-primary'>글쓰기</a>
 	</div>
 </div>
 

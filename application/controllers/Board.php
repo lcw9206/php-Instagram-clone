@@ -22,6 +22,35 @@ class Board extends CI_Controller {
 		$this->load->view('board_write', $data);
 	}
 
+	public function do_write()
+	{
+		# post로 넘어온 특정값을 받아오는 것 = get_post, 전체 = post
+		$title = $this->input->get_post('title');
+		$content = $this->input->get_post('content');
+		$is_secret = $this->input->get_post('is_secret');
+
+		if($title=='') {
+			send_json(400, '제목을 입력해주세요.');
+		}
+
+		if($content=='') {
+			send_json(400, '내용을 입력해주세요.');
+		}
+
+		$this->db->set('title', $title);
+		$this->db->set('content', $content);
+		$this->db->set('is_secret', $is_secret ? $is_secret : '');
+		$this->db->set('created', date('Y-m-d H:i:s'));
+		if (!$this->db->insert('posts')) {
+			send_json(500, 'DB Error');
+		} else {
+			$post_no = $this->db->insert_id();
+		}
+
+		$result['post_no'] = $post_no;
+		send_json(200, 'Success', $result);
+	}
+
 	public function _header()	# 메서드 앞에 '_'를 붙이면 외부에서 접근이 불가능하다. 주로 설정파일 같은 것들에 사용한다.
 	{
 		return $this->load->view('_header','',true);	# true를 하면 값을 뿌려주는 것이 아닌 값을 반환(return)한다.

@@ -11,9 +11,16 @@ class Sign extends MY_Controller {
 
 	public function index()
 	{
+		elog('index');
 		$data['header'] = $this->_header();
 		$data['footer'] = $this->_footer();
 
 		$this->load->view('sign', $data);
 	}
+
+	public function up()
+	{
+		elog('signup');
+	}
+
 }

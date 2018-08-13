@@ -45,3 +45,18 @@ body {
 	cursor: pointer;
 	text-decoration: none !important;
 }
+
+@media (max-width: 1024px) {
+	.left-sign {
+		display: none;
+	}
+
+	.right-sign {
+		float: none;
+		width: 400px;
+		margin: 0 auto;
+	}
+	.sign-div {
+		width: 100%;
+	}
+}

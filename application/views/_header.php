@@ -4,6 +4,7 @@
 	<title>인스타그램</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="/assets/css/web.min.css" />
+	<script src="/assets/js/web.min.js"></script>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
@@ -19,7 +20,7 @@
 					<h4 class="modal-title" id="myModalLabel">회원가입</h4>
 				</div>
 				<div class="modal-body">
-					<form>
+					<form class="signup-form">
 						<div class="form-group">
 							<label>이메일</label>
 							<input type="email" name="user_id" class="form-control" placeholder="이메일">

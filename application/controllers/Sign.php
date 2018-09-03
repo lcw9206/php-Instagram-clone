@@ -7,14 +7,23 @@ class Sign extends MY_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+
+		# 쿠키를 굽기위한 선언
+		$this->load->helper('cookie');
+		$this->load->library('encrypt');
 	}
 
 	public function index()
 	{
-		$data['header'] = $this->_header();
-		$data['footer'] = $this->_footer();
+		if($this->current_user) {
+			redirect('/');
+		}
 
-		$this->load->view('sign', $data);
+		$this->data['redirect_url'] = $this->input->get_post('redirect_url');
+		$this->data['header'] = $this->_header();
+		$this->data['footer'] = $this->_footer();
+
+		$this->load->view('sign', $this->data);
 	}
 
 	public function up()
@@ -53,4 +62,60 @@ class Sign extends MY_Controller {
 		}
 	}
 
+	public function in() 
+	{
+		$user_id = $this->input->get_post('user_id');
+		$user_password = $this->input->get_post('user_password');
+		$redirect_url = $this->input->get_post('redirect_url');
+		if(trim($user_id)=="") {
+			send_json(400, '아이디를 입력해주세요.');
+		}
+
+		if(trim($user_password)=="") {
+			send_json(400, '비밀번호를 입력해주세요.');
+		}
+
+		$this->db->where('id', $user_id);
+		$this->db->where('password', pwd_hash($user_password));
+		
+		$user = $this->db->get('users')->row_array();
+
+		if($user) {
+
+			// 쿠키 데이터 지정
+			$cookie_data['no'] = $user['no'];
+			$cookie_data['id'] = $user['id'];
+			$cookie_data['name'] = $user['name'];
+
+			// 쿠키 옵션 지정
+			$serialized_string = serialize($cookie_data);
+			$encrypted_string = $this->encrypt->encode($serialized_string);
+			// $expire = COOKIE_EXPIRE; // 86400 = 1day, 864000 = 10day, 8640000 = 100day
+			// 만료일 0은 무한정
+			$expire = 0;
+			$cookie_option = array(
+	                   'name'   => 'ticket',
+	                   'value'  => $encrypted_string,
+	                   'expire' => $expire,
+	                   // 'domain' => strtolower($this->CI->config->item('default_domain')),
+	                   // path에 /만 적어줄 경우, 해당 사이트 모든 곳에서 쿠키를 적용
+	                   'path'   => '/'
+	                   //'prefix' => 'myprefix_',
+	               );
+
+			// 쿠키 굽기
+			set_cookie($cookie_option);
+
+			$result['redirect_url'] = $redirect_url ? $redirect_url : '/';
+			send_json(200, '로그인에 성공하셨습니다.', $result);
+		} else {
+			send_json(405, '아이디가 존재하지 않거나 비밀번호가 일치하지 않습니다.');
+		}
+	}
+
+	public function out()
+	{
+		delete_cookie('ticket');
+		redirect('/');
+	}
 }

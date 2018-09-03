@@ -4,15 +4,16 @@
 	<div class="left-sign col-md-6 col-sm-6 col-xs-6">
 		<h2 class="left-sign-title">인스타그램 클론</h2>
 	</div>
-	<div class="col-md-6 col-sm-6 col-xs-6">
+	<div class="col-md-6 col-sm-6 col-xs-6 right-sign">
 		<div class="sign-form-div">
 			<h1 class="sign-form-title">Instagram</h1>
-			<form>
+			<form class = "login-form">
+				<input type="hidden" name="redirect_url" value="<?=$redirect_url?>" />
 			  	<div class="form-group">
-			    	<input type="email" name="id" class="form-control" placeholder="이메일">
+			    	<input type="email" name="user_id" class="form-control" placeholder="이메일">
 			  	</div>
 			  	<div class="form-group">
-			    	<input type="password" name="password" class="form-control" placeholder="비밀번호">
+			    	<input type="password" name="user_password" class="form-control" placeholder="비밀번호">
 			  	</div>
 			  	<button type="button" class="btn btn-default btn-block btn-primary login-btn">로그인</button>
 			</form>

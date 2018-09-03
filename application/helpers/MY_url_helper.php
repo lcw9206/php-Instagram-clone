@@ -8,4 +8,11 @@ function send_json($code = 200, $message = 'Success', $result = null, $redirect_
     $CI->output->_display();
     exit;
 }
-?>
+
+function current_url_with_querystring()
+{
+    $CI =& get_instance();
+
+    $url = $CI->config->site_url($CI->uri->uri_string());
+    return $_SERVER['QUERY_STRING'] ? $url.'?'.$_SERVER['QUERY_STRING'] : $url;
+}

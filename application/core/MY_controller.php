@@ -9,6 +9,38 @@ class MY_controller extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+		$this->_set_ticket_user();
+	}
+
+	public $current_user = array();
+	public $data = array();
+
+	# 쿠키의 로그인 정보를 가져와
+
+	public function _restrict()
+	{
+		if(!$this->current_user) {
+			redirect('/sign?redirect_url='.current_url_with_querystring());
+		}
+	}
+
+	public function _set_ticket_user() 
+	{
+		$this->load->helper('cookie');
+		$this->load->library('encrypt');
+
+		$cookiestring = get_cookie('ticket', TRUE);
+
+		$decrypted_string = $this->encrypt->decode($cookiestring);
+		$cookie_data = unserialize($decrypted_string);
+
+		$user_no = $cookie_data['no'];
+
+		$this->db->where('no', $user_no);
+		$user = $this->db->get('users')->row_array();
+
+		$this->current_user = $user;
+		$this->data['current_user'] = $this->current_user;
 	}
 
 	# 메서드 앞에 '_'를 붙이면 외부에서 접근이 불가능하다. 주로 설정파일 같은 것들에 사용한다.

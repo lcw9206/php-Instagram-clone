@@ -47,12 +47,13 @@ class MY_controller extends CI_Controller {
 	public function _header()	
 	{
 		# true를 하면 값을 뿌려주는 것이 아닌 값을 반환(return)한다.
-		return $this->load->view('_header','',true);	
+		# controller에서 세팅된 데이터를 넘겨준다.
+		return $this->load->view('_header',$this->data,true);	
 	}
 
 	public function _footer()
 	{
-		return $this->load->view('_footer','',true);
+		return $this->load->view('_footer',$this->data,true);
 	}
 
 }
